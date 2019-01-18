@@ -1,0 +1,157 @@
+CREATE TABLE Student(student_id integer PRIMARY KEY, SName text,course_id int);
+
+O/P: 
+table created.
+
+INSERT INTO Student VALUES(1,'Alekhya',102);
+INSERT INTO Student VALUES(2,'Deepa',105);
+INSERT INTO Student VALUES(3,'Ankit'101);
+INSERT INTO Student VALUES(4,'Devesh'103);
+INSERT INTO Student VALUES(5,'Aaditya'104);
+
+select * from Student;
+
+O/P:
+
+1|Alekhya
+2|Deepa
+3|Ankit
+4|Devesh
+5|Aaditya
+
+CREATE TABLE Professor(prof_id integer PRIMARY KEY, PName text, c_name text);
+
+O/P: 
+table created.
+
+INSERT INTO Professor VALUES(1,'Sandhat','Database');
+INSERT INTO Professor VALUES(2,'Deepika','React');
+INSERT INTO Professor VALUES(3,'Sushant','Angular');
+INSERT INTO Professor VALUES(4,'Aastik','Javascript');
+INSERT INTO Professor VALUES(5,'Dinesh','GIT');
+
+select * from Professor;
+
+O/P:
+
+11|Sandhat|Database
+12|Deepika|React
+13|Sushant|Angular
+14|Aastik|Javascript
+15|Dinesh|GIT
+
+CREATE TABLE Course(course_id integer PRIMARY KEY, c_name text);
+
+O/P:
+table created.
+
+INSERT INTO Course VALUES(001,'Database');
+INSERT INTO Course VALUES(002,'React');
+INSERT INTO Course VALUES(003,'Angular');
+INSERT INTO Course VALUES(004,'Javascript');
+INSERT INTO Course VALUES(005,'GIT');
+
+select * from Course;
+
+O/P:
+
+101|Database
+102|React
+103|Angular
+104|Javascript
+105|GIT
+
+
+CREATE TABLE Course_stud(course_id integer, student_id integer);
+
+O/P:
+
+table created.
+
+INSERT INTO Course_stud VALUES(101,3);
+INSERT INTO Course_stud VALUES(102,1);
+INSERT INTO Course_stud VALUES(103,4);
+INSERT INTO Course_stud VALUES(104,5);
+INSERT INTO Course_stud VALUES(105,2);
+INSERT INTO Course_stud VALUES(104,2);
+INSERT INTO Course_stud VALUES(103,3);
+INSERT INTO Course_stud VALUES(103,1);
+
+select *  from Course_stud;
+
+101|3
+102|1
+103|4
+104|5
+105|2
+104|2
+103|3
+103|1
+
+CREATE TABLE Course_prof(course_id integer PRIMARY KEY, Prof_id integer);
+
+O/P:
+
+table created.
+
+INSERT INTO Course_prof VALUES(101,11);
+INSERT INTO Course_prof VALUES(102,12);
+INSERT INTO Course_prof VALUES(103,13);
+INSERT INTO Course_prof VALUES(104,14);
+INSERT INTO Course_prof VALUES(105,15);
+
+select * from Course_prof;
+
+101|11
+102|12
+103|13
+104|14
+105|15
+
+QUERY 1
+select Student.student_id,SName,c_name
+from Student inner join  Course_stud on Student.student_id = Course_stud.student_id join Course on Course_stud.course_id = Course.course_id
+group by Student.student_id,c_name;
+
+O/P:
+
+1|Alekhya|Angular
+1|Alekhya|React
+2|Deepa|GIT
+2|Deepa|Javascript
+3|Ankit|Angular
+3|Ankit|Database
+4|Devesh|Angular
+5|Aaditya|Javascript
+
+QUERY 2
+
+select course_id, count(course_id) as tot
+from Student S join Course_stud cs on S.student_id = cs.student_id 
+group by course_id;
+
+O/P:
+
+101|1
+102|1
+103|3
+104|2
+105|1
+
+
+QUERY 3
+
+create procedure ProfDetails(s_id int)
+	begin
+		select student_id,p.PName,p.professor_id,s.course_id
+		FROM Student s
+		JOIN (Professor p)
+		ON s.course_id = p.course_id where s.student_id =s_id;
+		END
+		delimiter;
+
+	call ProfDetails(3);
+
+O/P:
+
+3|Sandhat|101

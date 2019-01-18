@@ -1,0 +1,11 @@
+SUPPLIER
+
+table contents: supplier_id, supplier_name,company,address, city
+
+PRODUCT
+
+table contents: product_id,product_name, prod_type,supplier_id,price
+
+POPULATION 
+
+table contents: city, population
